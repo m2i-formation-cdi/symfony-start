@@ -1,0 +1,14 @@
+<h1>Hello {{ name }} vous avez {{ age }} ans</h1>
+<ul>
+    {% for fruit in fruitList %}
+        <li>{{ fruit }}</li>
+    {% endfor %}
+</ul>
+
+{% if age>18 %}
+    <p>vous êtes majeur</p>
+{% else %}
+    <p>vous êtes mineur</p>
+{% endif %}
+
+<a href="{{ path('home_add', {'n1': '5', 'n2': '9'}) }}">la somme de 5 et 9</a>
