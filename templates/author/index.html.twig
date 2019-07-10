@@ -11,7 +11,37 @@
 <div class="example-wrapper">
     <h1>Liste des auteurs</h1>
 
-    {{ dump(authorList) }}
+    <div>
+        <a href="{{ path('author_new') }}">Nouvel auteur</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Nom complet</td>
+                <td>Genre</td>
+                <td>Date de naissance</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in authorList %}
+                <tr>
+                    <td>{{ author.fullName }}</td>
+                    <td>{{ author.gender }}</td>
+                    <td>{{  author.birthDate | date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path('author_edit', {'id': author.id}) }}">
+                            modifier
+                        </a>
+                        &nbsp;|&nbsp;
+                        <a href="{{ path('author_delete', {'id': author.id}) }}">Supprimer</a>
+                    </td>
+
+                </tr>
+            {%  endfor %}
+        </tbody>
+    </table>
 
 </div>
 {% endblock %}

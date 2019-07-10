@@ -42,7 +42,7 @@ class Author
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $birtDate;
+    private $birthDate;
 
     public function getId(): ?int
     {
@@ -85,14 +85,14 @@ class Author
         return $this;
     }
 
-    public function getBirtDate(): ?\DateTimeInterface
+    public function getBirthDate(): ?\DateTimeInterface
     {
-        return $this->birtDate;
+        return $this->birthDate;
     }
 
-    public function setBirtDate(?\DateTimeInterface $birtDate): self
+    public function setBirthDate(?\DateTimeInterface $birthDate): self
     {
-        $this->birtDate = $birtDate;
+        $this->birthDate = $birthDate;
 
         return $this;
     }
@@ -105,5 +105,16 @@ class Author
         return $this->articles;
     }
 
+    public function getFullName(): string{
+        $fullName = $this->gender == "f"?"madame":"monieur";
+
+        if(! empty ($this->firstName)){
+            $fullName .= " ". $this->firstName;
+        }
+
+        $fullName .= " ". $this->name;
+
+        return $fullName;
+    }
 
 }

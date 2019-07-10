@@ -58,7 +58,7 @@ class ArticleController extends AbstractController
         $author->setName("Hemingway")
             ->setFirstName("Ernest")
             ->setGender("m")
-            ->setBirtDate(new \DateTime("now +15 days -100 years"));
+            ->setBirthDate(new \DateTime("now +15 days -100 years"));
 
         $article->setTitle('Pour qui sonne le glas')
             ->setContent('et il va faire mal')

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 mt-4">
+            <h2>Formulaire des auteurs</h2>
+
+            {{ form_start(authorForm) }}
+
+            {{ form_widget(authorForm) }}
+            <button type="submit" name="submit" class="btn btn-danger">
+                {{ buttonLabel }}
+            </button>
+
+            {{ form_end(authorForm) }}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
