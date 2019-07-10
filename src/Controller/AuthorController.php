@@ -89,7 +89,6 @@ class AuthorController extends AbstractController
         $this->addFlash("success", "Suppression ok");
 
         return $this->redirectToRoute("author");
-
     }
 
 

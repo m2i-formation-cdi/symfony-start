@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Author;
+use App\Form\ArticleFormType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -51,30 +53,23 @@ class ArticleController extends AbstractController
     /**
      * @Route("/new")
      */
-    public function newArticleAction(){
-        $article = new Article();
+    public function newArticleAction(Request $request){
 
-        $author = new Author();
-        $author->setName("Hemingway")
-            ->setFirstName("Ernest")
-            ->setGender("m")
-            ->setBirthDate(new \DateTime("now +15 days -100 years"));
+        $form = $this->createForm(ArticleFormType::class);
 
-        $article->setTitle('Pour qui sonne le glas')
-            ->setContent('et il va faire mal')
-            ->setCreatedAt(new \DateTime('now -15 minutes'))
-            ->setUpdatedAt(new \DateTime('now'))
-            ->setAuthor($author);
+        $form->handleRequest($request);
 
+        if($form->isSubmitted() && $form->isValid()){
+            $article = $form->getData();
+            $this->em->persist($article);
+            $this->em->flush();
 
-        $entityManager = $this->em;
+            return $this->redirectToRoute("article");
+        }
 
-        $entityManager->persist($article);
-        $entityManager->flush();
-
-
-
-        return $this->redirectToRoute("article");
+        return $this->render("/article/form.html.twig", [
+            "articleForm" => $form->createView()
+        ]);
     }
 
     /**

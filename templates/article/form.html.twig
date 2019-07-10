@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(articleForm) }}
+        {{ form_widget(articleForm) }}
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+                Valider
+            </button>
+        </div>
+    {{ form_end(articleForm) }}
+
+{% endblock %}
+
