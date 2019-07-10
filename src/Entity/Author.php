@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Article;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AuthorRepository")
@@ -30,6 +32,12 @@ class Author
      * @ORM\Column(type="string", length=1)
      */
     private $gender;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="author")
+     * @var ArrayCollection
+     */
+    private $articles;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -88,4 +96,14 @@ class Author
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getArticles(): ArrayCollection
+    {
+        return $this->articles;
+    }
+
+
 }

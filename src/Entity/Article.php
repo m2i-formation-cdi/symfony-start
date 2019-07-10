@@ -33,6 +33,13 @@ class Article
     private $updatedAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Author",
+     *     inversedBy="articles", cascade={"persist"})
+     * @var Author
+     */
+    private $author;
+
+    /**
      * @ORM\Column(type="text")
      */
     private $content;
@@ -96,5 +103,22 @@ class Article
         return $this;
     }
 
+    /**
+     * @return Author
+     */
+    public function getAuthor(): Author
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param Author $author
+     * @return Article
+     */
+    public function setAuthor(Author $author): Article
+    {
+        $this->author = $author;
+        return $this;
+    }
 
 }

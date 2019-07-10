@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Author;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
@@ -52,10 +53,19 @@ class ArticleController extends AbstractController
      */
     public function newArticleAction(){
         $article = new Article();
-        $article->setTitle('Symfony 5 arrive')
+
+        $author = new Author();
+        $author->setName("Hemingway")
+            ->setFirstName("Ernest")
+            ->setGender("m")
+            ->setBirtDate(new \DateTime("now +15 days -100 years"));
+
+        $article->setTitle('Pour qui sonne le glas')
             ->setContent('et il va faire mal')
             ->setCreatedAt(new \DateTime('now -15 minutes'))
-            ->setUpdatedAt(new \DateTime('now'));
+            ->setUpdatedAt(new \DateTime('now'))
+            ->setAuthor($author);
+
 
         $entityManager = $this->em;
 
