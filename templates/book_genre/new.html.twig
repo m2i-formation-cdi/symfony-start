@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New BookGenre{% endblock %}
+
+{% block body %}
+    <h1>Create new BookGenre</h1>
+
+    {{ include('book_genre/_form.html.twig') }}
+
+    <a href="{{ path('book_genre_index') }}">back to list</a>
+{% endblock %}
