@@ -9,12 +9,14 @@
 </style>
 
 <div class="example-wrapper">
-    {{ dump(articleList) }}
+
 
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>Titre</th>
+            <th>Auteur</th>
+            <th>Tags</th>
             <th>Date de publication</th>
             <th>Date de modification</th>
         </tr>
@@ -27,6 +29,18 @@
                             {{ article.title }}
                         </a>
                     </td>
+                    <td>{{ article.author.fullName }}</td>
+                    <td>
+
+                        {% for tag in article.tags %}
+                            {{ tag.tagName }}
+                        {% endfor %}
+
+
+
+                    </td>
+
+
                     <td> {{ article.createdAt| date("d/m/Y") }}</td>
                     <td> {{ article.updatedAt | date("d/m/Y") }}</td>
                 </tr>

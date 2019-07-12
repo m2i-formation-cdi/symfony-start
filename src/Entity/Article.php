@@ -37,13 +37,13 @@ class Article
 
     /**
      * @ORM\ManyToOne(targetEntity="Author",
-     *     inversedBy="articles", cascade={"persist"})
+     *     inversedBy="articles", cascade={"persist"}, fetch="EAGER")
      * @var Author
      */
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles", fetch="EAGER")
      * @var ArrayCollection
      */
     private $tags;

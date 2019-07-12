@@ -25,12 +25,25 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
         for($i=1; $i<= 500; $i++){
             $createdAt = $faker->dateTimeThisDecade();
 
+            $tagRefs = [];
+            $numberOfTags = mt_rand(0,5);
+
+            for($k=1; $k <= $numberOfTags; $k++){
+                array_push($tagRefs, "tag_". mt_rand(1,12));
+            }
+
+            $tagRefs = array_unique($tagRefs);
+
             $article = new Article();
             $article->setTitle($faker->sentence(8))
                 ->setContent($faker->paragraphs(5, true))
                 ->setCreatedAt($createdAt)
                 ->setUpdatedAt($faker->dateTimeBetween($createdAt))
                 ->setAuthor($this->getReference("author_".mt_rand(0, 25)));
+
+            foreach ($tagRefs as $ref){
+                $article->addTag($this->getReference($ref));
+            }
 
             $manager->persist($article);
 
@@ -48,7 +61,8 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            AuthorFixtures::class
+            AuthorFixtures::class,
+            TagFixtures::class
         ];
     }
 }
