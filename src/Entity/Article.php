@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
 class Article
@@ -119,6 +120,24 @@ class Article
     {
         $this->author = $author;
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prePersistEvent(){
+        $date = new \DateTime();
+        $this->createdAt = $date;
+        $this->updatedAt = $date;
+    }
+
+    /***
+     * @ORM\PreUpdate()
+     * @throws \Exception
+     */
+    public function preUpdateEvent(){
+        $date = new \DateTime();
+        $this->updatedAt = $date;
     }
 
 }
