@@ -51,11 +51,15 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/new")
+     * @Route("/new", name="article_new")
+     * @Route("/edit/{id}", name="article_edit")
      */
-    public function newArticleAction(Request $request){
+    public function addEditArticleAction(Request $request, Article $article=null){
 
-        $form = $this->createForm(ArticleFormType::class);
+        if(! $article){
+            $article = new Article();
+        }
+        $form = $this->createForm(ArticleFormType::class, $article);
 
         $form->handleRequest($request);
 

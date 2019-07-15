@@ -43,7 +43,8 @@ class Article
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles",
+     *     fetch="EAGER", cascade={"persist"})
      * @var ArrayCollection
      */
     private $tags;
