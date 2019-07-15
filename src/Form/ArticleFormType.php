@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\Author;
+use App\Form\CustomFormType\TagFormType;
 use App\Form\DataTransformer\TagDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -14,20 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArticleFormType extends AbstractType
 {
-    /**
-     * @var TagDataTransformer
-     */
-    private $transformer;
-
-    /**
-     * ArticleFormType constructor.
-     * @param TagDataTransformer $transformer
-     */
-    public function __construct(TagDataTransformer $transformer)
-    {
-        $this->transformer = $transformer;
-    }
-
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -36,16 +23,20 @@ class ArticleFormType extends AbstractType
             ->add('content', TextareaType::class, ["label" => "Contenu",
                 "attr" => ["rows"=>10, "cols"=>"25"]
             ])
+            /*
             ->add('author', EntityType::class,
                 [
                     "label"=>"Auteur",
                     "class"=> Author::class,
                     "choice_label" => "fullName"
                 ])
-            ->add('tags', TextType::class, ['label'=>'tags'])
+            */
+
+            ->add('author', AuthorFormType::class)
+            ->add('tags', TagFormType::class, ['label'=>'tags'])
         ;
 
-        $builder->get('tags')->addModelTransformer($this->transformer);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

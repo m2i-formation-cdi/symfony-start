@@ -33,3 +33,7 @@ services:
 #    App\Service\GreetingService:
 #        arguments:
 #            $from: '%from%'
+
+    App\Entity\EventListener\ArticleAuthorSelector:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }

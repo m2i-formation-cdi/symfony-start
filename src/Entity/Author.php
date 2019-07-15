@@ -112,7 +112,7 @@ class Author
     }
 
     public function getFullName(): string{
-        $fullName = $this->gender == "f"?"madame":"monieur";
+        $fullName = $this->gender == "f"?"madame":"monsieur";
 
         if(! empty ($this->firstName)){
             $fullName .= " ". $this->firstName;
