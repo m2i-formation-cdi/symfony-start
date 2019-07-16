@@ -9,7 +9,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Stof\DoctrineExtensionsBundle\Uploadable\UploadableManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -75,7 +77,9 @@ class ArticleController extends AbstractController
      * @Route("/new", name="article_new")
      * @Route("/edit/{id}", name="article_edit")
      */
-    public function addEditArticleAction(Request $request, Article $article=null){
+    public function addEditArticleAction(Request $request,
+                                         UploadableManager $uploadManager,
+                                         Article $article=null){
 
         if(! $article){
             $article = new Article();
@@ -85,7 +89,14 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $article = $form->getData();
+            //$article = $form->getData();
+
+            dump($article->getUploadedFile());
+
+            if($article->getUploadedFile() instanceof UploadedFile){
+                $uploadManager->markEntityToUpload($article, $article->getUploadedFile());
+            }
+
             $this->em->persist($article);
             $this->em->flush();
 

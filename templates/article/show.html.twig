@@ -13,7 +13,7 @@
     <p>par : {{ article.author.fullName }}</p>
 
     <div>
-        {{ article.content }}
+        {{ article.content | purify}}
     </div>
 
 {% endblock %}
