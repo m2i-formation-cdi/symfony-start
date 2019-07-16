@@ -19,6 +19,38 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function getAllArticlesByPage($articlesPerPage = 20, $pageNumber=1){
+        $qb = $this->createQueryBuilder("a")
+            ->select(   "a.id, a.title, a.createdAt, a.updatedAt, a.content,
+                            CONCAT_WS(' ', author.firstName, author.name) as fullAuthorName,
+                            GROUP_CONCAT(t.tagName SEPARATOR ', ') as tagList")
+            ->join('a.author', 'author')
+            ->leftjoin('a.tags', 't')
+            ->groupBy('a.id')
+            ->setMaxResults($articlesPerPage)
+            ->setFirstResult(($pageNumber -1) * $articlesPerPage)
+        ;
+
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    public function getTotalNumberOfArticles(){
+        $qb = $this->createQueryBuilder('a')->select('COUNT(a)');
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getLastArticles($numberOfArticles){
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults($numberOfArticles);
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+
     // /**
     //  * @return Article[] Returns an array of Article objects
     //  */

@@ -6,7 +6,15 @@
 
 {% block body %}
 
-    {{ dump(article) }}
+    <h1>{{ article.title }}</h1>
+
+    <p>paru le {{ article.createdAt | date('d/m/Y') }}</p>
+
+    <p>par : {{ article.author.fullName }}</p>
+
+    <div>
+        {{ article.content }}
+    </div>
 
 {% endblock %}
 

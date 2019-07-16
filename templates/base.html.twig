@@ -7,7 +7,7 @@
             <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
         {% endblock %}
     </head>
-    <body>
+    <body class="container-fluid">
 
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
@@ -15,7 +15,16 @@
             </div>
         {% endfor %}
 
-        {% block body %}{% endblock %}
+        <div class="row justify-content-center">
+            <div class="col-md-8 p-3">
+                {% block body %}{% endblock %}
+            </div>
+            <aside class="col-md-4 p-2">
+                {% block aside %}{% endblock %}
+            </aside>
+        </div>
+
+
         {% block javascripts %}
             <script src="{{ asset('build/runtime.js') }}"></script>
             <script src="{{ asset('build/js/app.js') }}"></script>

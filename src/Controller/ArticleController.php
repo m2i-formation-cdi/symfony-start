@@ -8,6 +8,7 @@ use App\Form\ArticleFormType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,17 +37,37 @@ class ArticleController extends AbstractController
 
 
     /**
-     * @Route("/list", name="article")
+     * @Route("/list/page-{pageNumber}", name="article",
+     *     requirements={"pageNumber"="\d+"}, defaults={"pageNumber"="1"})
      */
-    public function index()
+    public function index($pageNumber)
     {
 
-        $repo = $this->em->getRepository(Article::class);
-        $articleList = $repo->findAll();
+        $nbArticlePerPage = 10;
+        $repoArticle = $this->em->getRepository(Article::class);
+        $repoAuthor = $this->em->getRepository(Author::class);
+
+        $lastArticlesList = $repoArticle->getLastArticles(10);
+        $authorList = $repoAuthor->getAuthorList();
+
+        $articleList = $repoArticle->getAllArticlesByPage($nbArticlePerPage, $pageNumber );
+        $numberOfArticles = $repoArticle->getTotalNumberOfArticles();
+        $nbPages = ceil($numberOfArticles / $nbArticlePerPage);
+
+        $pageNumber = Min($pageNumber, $nbPages);
+
+        $startPage = $pageNumber-5 <0? $pageNumber: $pageNumber-5;
+        $endPage = Min($startPage+10, $nbPages);
 
         return $this->render('article/index.html.twig', [
-            'controller_name' => 'ArticleController',
-            "articleList" => $articleList
+            "articleList" => $articleList,
+            "numberOfArticles" => $numberOfArticles,
+            "nbPages" => $nbPages,
+            "startPage" => $startPage,
+            "endPage" => $endPage,
+            "pageNumber" => $pageNumber,
+            "lastArticlesList" => $lastArticlesList,
+            "authorList" => $authorList
         ]);
     }
 
@@ -84,6 +105,20 @@ class ArticleController extends AbstractController
         //$repo = $this->em->getRepository(Article::class);
         //$article = $repo->findOneBy(["id"=>$id]);
 
+        if(! $article){
+            throw $this->createNotFoundException("Pas d'article avec cet id");
+        }
+
+        return $this->render("article/show.html.twig", ["article"=>$article]);
+    }
+
+    /**
+     * @param Article $article
+     * @Route("/show/{slug}", name="article_show_by_slug")
+     * @ParamConverter("article", options={"mapping": {"slug": "slug"} })
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showArticleBySlugAction(Article $article){
         if(! $article){
             throw $this->createNotFoundException("Pas d'article avec cet id");
         }
