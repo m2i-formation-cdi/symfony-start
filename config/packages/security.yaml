@@ -1,0 +1,43 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        admin_provider:
+            memory:
+                users:
+                    admin:
+                        password: $2y$13$Sg6H9.qfD0x6FxMs5IB9MuiObmBqQ60MYyD32wy4uevhBWrU4X0.C
+                        roles: [ROLE_ADMIN]
+                    god:
+                        password: $2y$13$FN2NwsoRBdZK0wdkDhswdOszUu1uft3rNek1BdYh5o1lkUbZTsQr.
+                        roles: [ROLE_SUPER_ADMIN]
+    encoders:
+        Symfony\Component\Security\Core\User\User: bcrypt
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        admin:
+            pattern: ^/admin
+            anonymous: false
+            provider: admin_provider
+            form_login:
+                login_path: admin_login
+                check_path: admin_login_check
+            logout:
+                path: admin_logout
+                target: home_index
+        main:
+            anonymous: true
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
