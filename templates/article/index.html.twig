@@ -46,7 +46,7 @@
             {% for article in articleList %}
                 <tr>
                     <td>
-                        <a href="{{ path('article_show', {'id': article.id}) }}">
+                        <a href="{{ path('article_show_by_slug', {'slug': article.slug}) }}">
                             {{ article.title }}
                         </a>
                     </td>

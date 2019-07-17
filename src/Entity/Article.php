@@ -64,14 +64,14 @@ class Article extends Author
 
     /**
      * @ORM\ManyToOne(targetEntity="Author",
-     *     inversedBy="articles", cascade={"persist"}, fetch="EAGER")
+     *     inversedBy="articles", cascade={"persist"})
      * @var Author
      */
     private $author;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles",
-     *     fetch="EAGER", cascade={"persist"})
+     *      cascade={"persist"})
      * @var ArrayCollection
      */
     private $tags;

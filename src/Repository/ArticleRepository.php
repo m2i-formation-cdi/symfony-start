@@ -21,7 +21,7 @@ class ArticleRepository extends ServiceEntityRepository
 
     public function getAllArticlesByPage($articlesPerPage = 20, $pageNumber=1){
         $qb = $this->createQueryBuilder("a")
-            ->select(   "a.id, a.title, a.createdAt, a.updatedAt, a.content,
+            ->select(   "a.id, a.title, a.createdAt, a.updatedAt, a.content, a.slug,
                             CONCAT_WS(' ', author.firstName, author.name) as fullAuthorName,
                             GROUP_CONCAT(t.tagName SEPARATOR ', ') as tagList")
             ->join('a.author', 'author')
@@ -42,11 +42,23 @@ class ArticleRepository extends ServiceEntityRepository
 
     public function getLastArticles($numberOfArticles){
         $qb = $this->createQueryBuilder('a')
-            ->select('a')
+            ->select('a.id, a.title, a.slug')
             ->orderBy('a.createdAt', 'DESC')
             ->setMaxResults($numberOfArticles);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getOneArticleBySlug($slug){
+        $qb = $this->createQueryBuilder('a')
+            ->select("a.title, 
+                CONCAT_WS(' ', author.firstName, author.name) as authorFullName"
+            )
+            ->join('a.author', 'author')
+            ->where('a.slug=:slug')
+            ->setParameter('slug', $slug);
+
+        return $qb->getQuery()->getArrayResult();
     }
 
 

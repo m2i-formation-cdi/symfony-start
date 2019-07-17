@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Author;
+use App\Entity\Comment;
 use App\Form\ArticleFormType;
+use App\Form\CommentFormType;
+use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
@@ -53,6 +56,7 @@ class ArticleController extends AbstractController
         $authorList = $repoAuthor->getAuthorList();
 
         $articleList = $repoArticle->getAllArticlesByPage($nbArticlePerPage, $pageNumber );
+
         $numberOfArticles = $repoArticle->getTotalNumberOfArticles();
         $nbPages = ceil($numberOfArticles / $nbArticlePerPage);
 
@@ -126,14 +130,26 @@ class ArticleController extends AbstractController
     /**
      * @param Article $article
      * @Route("/show/{slug}", name="article_show_by_slug")
-     * @ParamConverter("article", options={"mapping": {"slug": "slug"} })
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showArticleBySlugAction(Article $article){
+    public function showArticleBySlugAction($slug, ArticleRepository $repository){
+
+        $article = $repository->findeOneBySlug($slug);
+
         if(! $article){
             throw $this->createNotFoundException("Pas d'article avec cet id");
         }
 
-        return $this->render("article/show.html.twig", ["article"=>$article]);
+        $comment = new Comment();
+        $comment->setArticle($article);
+        $comment->setCreatedAt(new \DateTime());
+
+        $form = $this->createForm(CommentFormType::class, $comment);
+
+        return $this->render("article/show.html.twig", [
+            "article"=>$article,
+            "commentForm" => $form->createView()
+        ]);
     }
 }
