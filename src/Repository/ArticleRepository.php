@@ -49,17 +49,7 @@ class ArticleRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getOneArticleBySlug($slug){
-        $qb = $this->createQueryBuilder('a')
-            ->select("a.title, 
-                CONCAT_WS(' ', author.firstName, author.name) as authorFullName"
-            )
-            ->join('a.author', 'author')
-            ->where('a.slug=:slug')
-            ->setParameter('slug', $slug);
 
-        return $qb->getQuery()->getArrayResult();
-    }
 
 
 

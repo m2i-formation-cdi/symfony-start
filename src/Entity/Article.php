@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  * @Gedmo\Uploadable(path="img/photos", allowOverwrite=true, filenameGenerator="SHA1", appendNumber=true)
  */
-class Article extends Author
+class Article
 {
     /**
      * @ORM\Id()
@@ -235,7 +235,7 @@ class Article extends Author
     /**
      * @return string
      */
-    public function getImage(): string
+    public function getImage(): ? string
     {
         return $this->image;
     }

@@ -8,7 +8,7 @@
 
     <h1>{{ article.title }}</h1>
 
-    {% if article.image is defined %}
+    {% if article.image is not empty %}
      <img src="img/photos/{{ article.image }}" class="img-fluid">
     {% endif %}
 

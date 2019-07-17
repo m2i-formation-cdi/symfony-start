@@ -133,9 +133,9 @@ class ArticleController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showArticleBySlugAction($slug, ArticleRepository $repository){
+    public function showArticleBySlugAction(Article $article, Request $request){
 
-        $article = $repository->findeOneBySlug($slug);
+
 
         if(! $article){
             throw $this->createNotFoundException("Pas d'article avec cet id");
