@@ -37,3 +37,7 @@ services:
     App\Entity\EventListener\ArticleAuthorSelector:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
+
+    App\Entity\EventListener\AuthorPasswordEncoder:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }

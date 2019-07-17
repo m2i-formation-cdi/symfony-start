@@ -10,8 +10,11 @@ security:
                     god:
                         password: $2y$13$FN2NwsoRBdZK0wdkDhswdOszUu1uft3rNek1BdYh5o1lkUbZTsQr.
                         roles: [ROLE_SUPER_ADMIN]
+        author_provider:
+            entity: { class: App\Entity\Author, property: email}
     encoders:
         Symfony\Component\Security\Core\User\User: bcrypt
+        App\Entity\Author: bcrypt
 
     firewalls:
         dev:
