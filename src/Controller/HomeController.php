@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Service\NumericToRomanConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,6 +60,13 @@ class HomeController extends AbstractController
            "userName"=> $security->getLastUsername(),
            "error"=> $security->getLastAuthenticationError()
        ]) ;
+    }
+
+    /**
+     * @Route("/")
+     */
+    public function testAction(NumericToRomanConverter $converter){
+        return $this->render("test.html.twig");
     }
 
 }

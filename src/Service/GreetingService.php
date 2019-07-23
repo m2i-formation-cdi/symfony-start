@@ -27,13 +27,22 @@ class GreetingService
     public function __construct(LoggerInterface $logger, string $from)
     {
         $this->logger = $logger;
-        $this->from = $from;
+        $this->from = trim($from);
     }
 
 
     public function greet($name){
         $this->logger->info("$name greeted by {$this->from}");
-        return "Hello $name from {$this->from}";
+
+        if(! empty($this->from)){
+           $this->from = " from {$this->from}";
+        }
+
+        if(empty($name)){
+            throw new \InvalidArgumentException("Le nom est obligatoire");
+        }
+
+        return "Hello $name{$this->from}";
     }
 
 }
